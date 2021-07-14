@@ -36,3 +36,10 @@ Run:
 ```shell
 docker compose up -d 
 ```
+
+Create superuser:
+```shell
+pythno3 manage.py createsuperuser
+```
+
+Add source https://jtprog.ru/index.xml
