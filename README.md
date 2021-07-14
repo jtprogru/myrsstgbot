@@ -11,8 +11,10 @@ git clone https://github.com/jtprogru/myrsstgbot.git
 
 Configure:
 ```shell
-cd core
+cd myrsstgbot
 touch .env
+python3 -m venv venv
+source venv/bin/activate
 ```
 Place in `.env` this vars:
 - `TG_BOT_TOKEN` – Telegramm bot token;
@@ -39,7 +41,13 @@ docker compose up -d
 
 Create superuser:
 ```shell
+source venv/bin/activate
 pythno3 manage.py createsuperuser
 ```
 
 Add source https://jtprog.ru/index.xml
+
+## Copyright
+
+LICENSE: http://www.wtfpl.net
+AUTHOR: Michael Savin aka [@jtprogru](https://github.com/jtprogru)
