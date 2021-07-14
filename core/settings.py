@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -173,10 +174,10 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 # CELERY_TASK_SERIALIZER = 'pickle'
 # CELERY_RESULT_SERIALIZER = 'pickle'
 
-CELERY_BEAT_SCHEDULE = {
+CELERYBEAT_SCHEDULE = {
     "task_rss_loader": {
-        "task": "core.tasks.task_rss_loader",
-        "schedule": crontab(minute="*/2"),
+        "task": "task_rss_loader",
+        "schedule": timedelta(minutes=10),
     },
     # "send_email_report": {
     #     "task": "core.tasks.send_email_report",
@@ -184,10 +185,13 @@ CELERY_BEAT_SCHEDULE = {
     # },
 }
 
+CELERY_TIMEZONE = TIME_ZONE
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 DJANGO_CELERY_BEAT_TZ_AWARE = True
 
-# RSS-parser
+# Telegramm
+
+TG_BOT_TOKEN = os.environ.get('TG_BOT_TOKEN', None)

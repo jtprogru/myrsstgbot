@@ -47,7 +47,7 @@ class RSSParser:
     def running_source(self):
         self.source.status = STATUS_RUNNING
         self.source.save()
-        logger.info(f'Работаем над заданием заданием {self.source.title}')
+        logger.info(f'Работаем над заданием {self.source.title}')
 
     def finish_source(self):
         self.source.status = STATUS_READY
@@ -109,8 +109,6 @@ class Command(BaseCommand):
         else:
             source.status = STATUS_READY
             source.refresh_from_db()
-            # Необходимая логика после удачного получения статуса
-            print('Source status -> {}'.format(source.status))
-        # rssparser = RSSParser()
+            logger.info('[*] Source {} status -> {}'.format(source.id, source.status))
+
         rssparser.parse_all()
-        # print(f"Последняя запись:\n{feed['entries'][0]['title']}\n{feed['entries'][0]['link']}")
