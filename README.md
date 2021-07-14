@@ -11,7 +11,7 @@ git clone https://github.com/jtprogru/myrsstgbot.git
 
 Configure:
 ```shell
-cd myrsstgbot
+cd core
 touch .env
 ```
 Place in `.env` this vars:

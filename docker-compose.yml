@@ -16,7 +16,7 @@ services:
 
   celery:
     build: .
-    command: celery -A myrsstgbot beat -l info -S django
+    command: celery -A core beat -l info -S django
     volumes:
       - ./:/app
     env_file:

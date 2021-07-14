@@ -1,16 +1,16 @@
 from datetime import datetime
+from django.utils import timezone
 from logging import getLogger
 from typing import List
 
-import requests
 from django.core.management import BaseCommand, CommandError
-from django.conf import settings
+from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
 import feedparser
 from feedparser import FeedParserDict
 
 from feeder.constants import STATUS_READY, STATUS_RUNNING, STATUS_NEW
-from feeder.models import Task, RSSItem
+from feeder.models import Source, RSSItem
 
 logger = getLogger(__name__)
 
@@ -29,32 +29,30 @@ def log_errors(f):
 
 
 class RSSParser:
-    PAGE_LIMIT = 10
-
     def __init__(self):
-        self.task = None
+        self.source = None
 
     @log_errors
     def get_rss_feed(self, url: str) -> FeedParserDict:
-        self.task.status = STATUS_RUNNING
+        self.source.status = STATUS_RUNNING
         return feedparser.parse(url)
 
-    def find_task(self):
-        obj = Task.objects.filter(status=STATUS_NEW).first()
+    def find_source(self):
+        obj = Source.objects.filter(status=STATUS_NEW).first()
         if not obj:
-            raise CommandError('no tasks found')
-        self.task = obj
-        logger.info(f'Работаем над заданием {self.task.title}')
+            raise CommandError('no sources found')
+        self.source = obj
+        logger.info(f'Работаем над заданием {self.source.title}')
 
-    def running_task(self):
-        self.task.status = STATUS_RUNNING
-        self.task.save()
-        logger.info(f'Работаем над заданием заданием {self.task.title}')
+    def running_source(self):
+        self.source.status = STATUS_RUNNING
+        self.source.save()
+        logger.info(f'Работаем над заданием заданием {self.source.title}')
 
-    def finish_task(self):
-        self.task.status = STATUS_READY
-        self.task.save()
-        logger.info(f'Завершили задание {self.task.title}')
+    def finish_source(self):
+        self.source.status = STATUS_READY
+        self.source.save()
+        logger.info(f'Завершили задание {self.source.title}')
 
     def get_rss_item_list(self, feed: FeedParserDict) -> List[RSSItem]:
         rss_item = []
@@ -79,22 +77,40 @@ class RSSParser:
 
     def parse_all(self):
         # Выбрать какое-нибудь задание
-        self.find_task()
+        self.find_source()
 
-        feed = self.get_rss_feed(self.task.url)
+        feed = self.get_rss_feed(self.source.url)
         logger.info(f'Всего постов в RSS-ленте: {len(feed["entries"])}')
 
         self.get_rss_item_list(feed)
 
         # Завершить задание
-        self.finish_task()
-        # self.find_task()
+        self.finish_source()
 
 
 class Command(BaseCommand):
     help = 'Парсинг RSS'
 
+    def add_arguments(self, parser):
+        parser.add_argument('title', type=str)
+        parser.add_argument('url', type=str)
+
     def handle(self, *args, **options):
         rssparser = RSSParser()
+        status = STATUS_NEW
+        source = Source.objects.get(pk=options['url'])
+        if status == 0:
+            PeriodicTask.objects.create(
+                name='task_rss_loader',
+                task='task_rss_loader',
+                interval=IntervalSchedule.objects.get(every=120, period='seconds'),
+                start_time=timezone.now(),
+            )
+        else:
+            source.status = STATUS_READY
+            source.refresh_from_db()
+            # Необходимая логика после удачного получения статуса
+            print('Source status -> {}'.format(source.status))
+        # rssparser = RSSParser()
         rssparser.parse_all()
         # print(f"Последняя запись:\n{feed['entries'][0]['title']}\n{feed['entries'][0]['link']}")

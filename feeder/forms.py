@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import RSSItem, Task
+from .models import RSSItem, Source
 
 
 class RSSItemForm(forms.ModelForm):
@@ -14,9 +14,9 @@ class RSSItemForm(forms.ModelForm):
         )
 
 
-class TaskForm(forms.ModelForm):
+class SourceForm(forms.ModelForm):
     class Meta:
-        model = Task
+        model = Source
         fields = (
             'title',
             'url',

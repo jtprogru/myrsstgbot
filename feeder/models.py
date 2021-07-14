@@ -3,17 +3,17 @@ from django.db import models
 from .constants import STATUS_NEW, STATUS_RUNNING, STATUS_READY
 
 
-class Task(models.Model):
+class Source(models.Model):
     title = models.TextField(
-        verbose_name='Название задания',
+        verbose_name='Название источника',
         unique=True,
     )
     url = models.URLField(
-        verbose_name='Ссылка на раздел',
+        verbose_name='Ссылка на источник',
         unique=True,
     )
     status = models.IntegerField(
-        verbose_name='Статус задания',
+        verbose_name='Статус обработки',
         choices=(
             (STATUS_NEW, 'Новое'),
             (STATUS_RUNNING, 'Запущено'),
@@ -26,8 +26,8 @@ class Task(models.Model):
         return f'#{self.pk} {self.title}'
 
     class Meta:
-        verbose_name = 'Задание'
-        verbose_name_plural = 'Задания'
+        verbose_name = 'Источник'
+        verbose_name_plural = 'Источники'
 
 
 class RSSItem(models.Model):

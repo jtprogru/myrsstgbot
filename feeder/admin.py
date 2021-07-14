@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .forms import RSSItemForm, TaskForm
-from .models import RSSItem, Task
+from .forms import RSSItemForm, SourceForm
+from .models import RSSItem, Source
 
 
 @admin.register(RSSItem)
@@ -11,8 +11,8 @@ class RSSItemAdmin(admin.ModelAdmin):
     form = RSSItemForm
 
 
-@admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
+@admin.register(Source)
+class SourceAdmin(admin.ModelAdmin):
     list_display = ('pk', 'title', 'url', 'status')
     list_filter = ('status', )
-    form = TaskForm
+    form = SourceForm
