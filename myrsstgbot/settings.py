@@ -159,5 +159,3 @@ LOGGING = {
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
 # RSS-parser
-
-RSS_URL = 'https://jtprog.ru/index.xml'
