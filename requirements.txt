@@ -2,3 +2,4 @@ django~=3.2.5
 gunicorn
 python-telegram-bot
 feedparser~=6.0.8
+requests
