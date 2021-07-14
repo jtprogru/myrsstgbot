@@ -1,0 +1,29 @@
+
+version: '3.8'
+
+services:
+  app:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/app/
+    env_file:
+      - .env
+    ports:
+      - 1337:8000
+    depends_on:
+      - redis
+
+  celery:
+    build: .
+    command: celery -A myrsstgbot beat -l info -S django
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    depends_on:
+      - app
+      - redis
+
+  redis:
+    image: redis:6.2.4-alpine

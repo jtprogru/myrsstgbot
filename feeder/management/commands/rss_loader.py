@@ -32,11 +32,6 @@ class RSSParser:
     PAGE_LIMIT = 10
 
     def __init__(self):
-        self.session = requests.Session()
-        self.session.headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.2 Safari/605.1.15',
-            'Accept-Language': 'ru',
-        }
         self.task = None
 
     @log_errors
@@ -93,6 +88,7 @@ class RSSParser:
 
         # Завершить задание
         self.finish_task()
+        # self.find_task()
 
 
 class Command(BaseCommand):
