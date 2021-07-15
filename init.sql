@@ -1,0 +1,14 @@
+insert into "feeder_source" ("title", "url", "status") values( '@habr', 'https://habr.com/ru/rss/feed/posts/all/dddada71f9c48388cceac68846ab7ae6/?fl=ru&limit=100', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@teletype', 'https://teletype.in/rss/jtprogru', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@pythonscripts', 'https://python-scripts.com/feed', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@boomburum', 'http://boomburum.ru/feed/', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@lgiordani', 'http://lgiordani.com/atom.xml', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@mattsegal', 'https://mattsegal.dev/feeds/all.atom.xml', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@shwanoff', 'https://shwanoff.ru/feed/', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@sitehome', 'https://blog.site-home.ru/rss.xml', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@jtprog', 'https://jtprog.ru/index.xml', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@devconnected', 'https://devconnected.com/feed/atom/', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@popstas', 'http://feeds.feedburner.com/popstas', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@shellhacks', 'https://www.shellhacks.com/ru/feed', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@vas3k', 'https://vas3k.ru/rss/', 1 );
+insert into "feeder_source" ("title", "url", "status") values( '@threadreaderapp', 'https://threadreaderapp.com/myrss/9ef236b6-aaee-44a9-9bbf-31d1b84c1622.rss', 1 );

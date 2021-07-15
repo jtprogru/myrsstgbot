@@ -14,33 +14,33 @@ services:
     ports:
       - 1337:8000
     depends_on:
-      - redis
+      - rediska
 
   celery_worker:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -A core worker -l debug -E
+    command: celery -A core worker -l DEBUG --pool=solo -E
     volumes:
       - ./:/app
     env_file:
       - .env
     depends_on:
       - app
-      - redis
+      - rediska
 
   celery_beat:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -A core beat -l debug
+    command: celery -A core beat -l DEBUG -S django
     volumes:
       - ./:/app
     env_file:
       - .env
     depends_on:
       - app
-      - redis
+      - rediska
 
-  redis:
+  rediska:
     image: redis:6.2.4-alpine

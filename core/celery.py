@@ -10,6 +10,14 @@ app = Celery('core')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object.
-app.config_from_object('django.conf:settings')
+app.config_from_object('django.conf:settings', namespace='CELERY')
+
 
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+
+app.conf.beat_schedule = {
+    'task_rss_loader': {
+        'task': 'feeder.tasks.task_rss_loader',
+        'schedule': 120,
+    }
+}

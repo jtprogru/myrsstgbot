@@ -6,8 +6,8 @@ from .models import RSSItem, Source
 
 @admin.register(RSSItem)
 class RSSItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'pub_date', 'link')
-    list_filter = ('pub_date', )
+    list_display = ('id', 'title', 'pub_date', 'posted', 'link')
+    list_filter = ('pub_date', 'posted')
     form = RSSItemForm
 
 

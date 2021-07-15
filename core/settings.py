@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_celery_beat',
+    'django_celery_results',
 
     'feeder',
 ]
@@ -174,18 +175,21 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 # CELERY_TASK_SERIALIZER = 'pickle'
 # CELERY_RESULT_SERIALIZER = 'pickle'
 
-CELERYBEAT_SCHEDULE = {
-    "task_rss_loader": {
-        "task": "task_rss_loader",
-        "schedule": timedelta(minutes=10),
-    },
-    # "send_email_report": {
-    #     "task": "core.tasks.send_email_report",
-    #     "schedule": crontab(hour="*/1"),
-    # },
-}
+# CELERYBEAT_SCHEDULE = {
+#     "task_rss_loader": {
+#         "task": "task_rss_loader",
+#         "schedule": timedelta(minutes=2),
+#     },
+#     # "send_email_report": {
+#     #     "task": "core.tasks.send_email_report",
+#     #     "schedule": crontab(hour="*/1"),
+#     # },
+# }
 
 CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 60 * 30
+
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
