@@ -16,11 +16,27 @@ services:
     depends_on:
       - rediska
 
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A core flower  -l INFO --port=5566
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    ports:
+      - 5566:5566
+    depends_on:
+      - app
+      - celery_beat
+      - celery_worker
+
   celery_worker:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -A core worker -l DEBUG --pool=solo -E
+    command: celery -A core worker -l INFO --pool=solo -E
     volumes:
       - ./:/app
     env_file:
@@ -33,7 +49,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -A core beat -l DEBUG -S django
+    command: celery -A core beat -l INFO -S django
     volumes:
       - ./:/app
     env_file:
