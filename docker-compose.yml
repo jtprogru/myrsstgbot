@@ -20,7 +20,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -A core worker -l debug -S django -E
+    command: celery -A core worker -l debug -E
     volumes:
       - ./:/app
     env_file:
