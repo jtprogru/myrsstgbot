@@ -6,6 +6,7 @@ from typing import List
 from django.core.management import BaseCommand, CommandError
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
+import dateparser
 import feedparser
 from feedparser import FeedParserDict
 
@@ -28,13 +29,9 @@ def log_errors(f):
     return inner
 
 
+@log_errors
 def datetime_parse(date_string: str) -> datetime:
-    if date_string.endswith('GTM'):
-        return datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
-    elif 'GMT' in date_string:
-        return datetime.strptime(date_string.split('+')[0], '%a %b %d %Y %H:%M:%S %Z')
-    else:
-        return datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %z')
+    return dateparser.parse(date_string)
 
 
 class RSSParser:

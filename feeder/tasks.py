@@ -11,5 +11,6 @@ logger = getLogger(__name__)
 def task_rss_loader():
     logger.info("[*] Run task - task_rss_loader")
     rssparser = RSSParser()
-    rssparser.parse_all()
+    res = rssparser.parse_all()
     logger.info("[*] Stop task - task_rss_loader")
+    return res
