@@ -30,8 +30,8 @@ TG_BOT_TOKEN="1234567890:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 SECRET_KEY="django-insecure-6$SuperSecretKEY"
 DEBUG=1
 DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 [::1]"
-CELERY_BROKER=redis://redis:6379/0
-CELERY_BACKEND=redis://redis:6379/0
+CELERY_BROKER=redis://rediska:6379/0
+CELERY_BACKEND=django-db
 ```
 
 Run:
@@ -42,10 +42,20 @@ docker compose up -d
 Create superuser:
 ```shell
 source venv/bin/activate
+python3 manage.py migrate
 pythno3 manage.py createsuperuser
 ```
 
-Add source https://jtprog.ru/index.xml
+Login to SQLite3 DB:
+```shell
+sqlite3 db.sqlite3
+```
+
+Import basic sources:
+```sqlite
+.read init.sql
+.quit
+```
 
 ## Copyright
 
