@@ -8,8 +8,8 @@ logger = getLogger(__name__)
 
 
 @shared_task(name="task_rss_loader")
-async def task_rss_loader():
+def task_rss_loader():
     logger.info("[*] Run task - task_rss_loader")
     rssparser = RSSParser()
-    await rssparser.parse_all()
+    rssparser.parse_all()
     logger.info("[*] Stop task - task_rss_loader")

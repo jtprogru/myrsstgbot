@@ -54,7 +54,7 @@ class RSSParser:
         self.source.save()
         logger.info(f'Завершили задание {self.source.title}')
 
-    async def get_rss_item_list(self, feed: FeedParserDict) -> List[RSSItem]:
+    def get_rss_item_list(self, feed: FeedParserDict) -> List[RSSItem]:
         rss_item = []
         for item in feed['entries']:
             try:
@@ -75,14 +75,14 @@ class RSSParser:
 
         return rss_item
 
-    async def parse_all(self):
+    def parse_all(self):
         # Выбрать какое-нибудь задание
         self.find_source()
 
         feed = self.get_rss_feed(self.source.url)
         logger.info(f'Всего постов в RSS-ленте: {len(feed["entries"])}')
 
-        await self.get_rss_item_list(feed)
+        self.get_rss_item_list(feed)
 
         # Завершить задание
         self.finish_source()
@@ -111,4 +111,4 @@ class Command(BaseCommand):
             source.refresh_from_db()
             logger.info('[*] Source {} status -> {}'.format(source.id, source.status))
 
-        await rssparser.parse_all()
+        rssparser.parse_all()
