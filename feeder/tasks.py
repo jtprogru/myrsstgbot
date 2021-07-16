@@ -37,5 +37,6 @@ def task_rss_loader():
 @shared_task
 def task_source_loader():
     loader = Loader(src_file=settings.FEEDER_DEFAULT_SRC_FILE)
-    loader.load()
+    res = loader.load()
+    return res
 
