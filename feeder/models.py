@@ -26,6 +26,7 @@ class Source(models.Model):
         return f'#{self.pk} {self.title}'
 
     class Meta:
+        ordering = ['title', 'status']
         verbose_name = 'Источник'
         verbose_name_plural = 'Источники'
 
@@ -51,5 +52,6 @@ class RSSItem(models.Model):
         return f"{self.id} | {self.title} | {self.pub_date}"
 
     class Meta:
+        ordering = ['pub_date']
         verbose_name = "RSS-запись"
         verbose_name_plural = "RSS-записи"
