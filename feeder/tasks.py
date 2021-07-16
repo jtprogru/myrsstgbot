@@ -12,7 +12,8 @@ logger = getLogger(__name__)
 
 def task_logger(f):
     """Простейший декоратор-логгер"""
-    logger.info(f"[*] Run task – {f}")
+    logger.info(f"[*] Run task – {f.__name__}")
+
     def inner(*args, **kwargs):
         try:
             return f(*args, **kwargs)
@@ -21,7 +22,7 @@ def task_logger(f):
             print(error_message)
             logger.error(error_message)
             raise e
-    logger.info(f"[*] Stop task - {f}")
+    logger.info(f"[*] Stop task - {f.__name__}")
     return inner
 
 
