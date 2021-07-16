@@ -26,6 +26,4 @@ feeds:
     url: 'https://www.shellhacks.com/ru/feed'
   - title: '@vas3k'
     url: 'https://vas3k.ru/rss/'
-  - title: '@threadreaderapp'
-    url: 'https://threadreaderapp.com/myrss/9ef236b6-aaee-44a9-9bbf-31d1b84c1622.rss'
 
