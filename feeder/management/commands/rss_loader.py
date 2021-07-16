@@ -75,13 +75,12 @@ class RSSParser:
         for item in feed['entries']:
             dtt = datetime_parse(item['published'])
 
-            obj = RSSItem(
+            obj = RSSItem.objects.update_or_create(
                 title=item['title'],
                 link=item['link'],
                 pub_date=dtt,
                 description=item['summary']
             )
-            obj.save()
             rss_item.append(obj)
 
         return rss_item
