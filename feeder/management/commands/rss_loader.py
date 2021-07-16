@@ -35,15 +35,24 @@ def datetime_parse(date_string: str) -> datetime:
 
 
 class RSSParser:
+    """
+    Класс парсера для RSS-фида
+    """
     def __init__(self):
         self.source = None
 
     @log_errors
     def get_rss_feed(self, url: str) -> FeedParserDict:
+        """
+        Получаем dict из RSS-фида
+        """
         self.source.status = STATUS_RUNNING
         return feedparser.parse(url)
 
     def find_source(self):
+        """
+        Ищем источник в статесу "Новый"
+        """
         obj = Source.objects.filter(status=STATUS_NEW).first()
         if not obj:
             raise CommandError('no sources found')
@@ -64,12 +73,7 @@ class RSSParser:
     def get_rss_item_list(self, feed: FeedParserDict) -> List[RSSItem]:
         rss_item = []
         for item in feed['entries']:
-            # try:
             dtt = datetime_parse(item['published'])
-                # logger.debug(f"Дата публикации: {item['published']}")
-            # except:
-            #     dtt = datetime.strptime(item['published'], '%a, %d %b %Y %H:%M:%S %z')
-            #     logger.debug(f"Дата публикации: {item['published']}")
 
             obj = RSSItem(
                 title=item['title'],
@@ -89,12 +93,12 @@ class RSSParser:
         feed = self.get_rss_feed(self.source.url)
         logger.info(f'Всего постов в RSS-ленте: {len(feed["entries"])}')
 
-        self.get_rss_item_list(feed)
+        added_list = self.get_rss_item_list(feed)
 
         # Завершить задание
         self.finish_source()
 
-        return f"Добавлено постов: {len(feed['entries'])}"
+        return f"Добавлено постов: {len(added_list)}"
 
 
 class Command(BaseCommand):
