@@ -166,20 +166,9 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 #
 # CELERY_QUEUES = {'testcelery': {'binding_key': 'testcelery'}}
 #
-# CELERY_ACCEPT_CONTENT = ['pickle', 'json']
-# CELERY_TASK_SERIALIZER = 'pickle'
-# CELERY_RESULT_SERIALIZER = 'pickle'
-
-# CELERYBEAT_SCHEDULE = {
-#     "task_rss_loader": {
-#         "task": "task_rss_loader",
-#         "schedule": timedelta(minutes=2),
-#     },
-#     # "send_email_report": {
-#     #     "task": "core.tasks.send_email_report",
-#     #     "schedule": crontab(hour="*/1"),
-#     # },
-# }
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
