@@ -15,6 +15,14 @@ services:
       - 1337:8000
     depends_on:
       - rediska
+      - postgresql
+
+  postgresql:
+    image: postgres:13.3-alpine3.14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
 
   flower:
     build:
@@ -60,3 +68,7 @@ services:
 
   rediska:
     image: redis:6.2.4-alpine
+
+volumes:
+   postgres_data:
+
