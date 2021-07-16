@@ -1,5 +1,7 @@
 ---
 feeds:
+  - title: '@habr_all'
+    url: 'https://habr.com/ru/rss/all/all/?fl=en%2Cru'
   - title: '@habr'
     url: 'https://habr.com/ru/rss/feed/posts/all/dddada71f9c48388cceac68846ab7ae6/?fl=ru&limit=100'
   - title: '@teletype'
