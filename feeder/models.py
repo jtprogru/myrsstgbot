@@ -36,7 +36,7 @@ class RSSItem(models.Model):
     Модель записи из RSS-ленты
     """
     title = models.CharField(max_length=255, verbose_name="Заголовок статьи")
-    link = models.URLField(unique=True, verbose_name="Ссылка на статью")
+    link = models.URLField(max_length=512, unique=True, verbose_name="Ссылка на статью")
     pub_date = models.DateTimeField(verbose_name="Дата публикации")
     description = models.TextField(verbose_name="Описание")
     posted = models.IntegerField(
