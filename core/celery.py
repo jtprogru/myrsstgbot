@@ -18,10 +18,10 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.beat_schedule = {
     'task_rss_loader': {
         'task': 'feeder.tasks.task_rss_loader',
-        'schedule': 60 * 60,
+        'schedule': 60 * 5,
     },
     'task_source_loader': {
         'task': 'feeder.tasks.task_source_loader',
-        'schedule': 60 * 30,
+        'schedule': 60 * 10,
     }
 }
