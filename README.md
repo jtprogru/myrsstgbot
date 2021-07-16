@@ -22,6 +22,16 @@ touch .env
 - `CELERY_BROKER` – Connection string to Redis;
 - `CELERY_BACKEND` – Storage for results;
 - `C_FORCE_ROOT` – Celery allow run as root;
+- `SQL_ENGINE` – Движок подключения к БД;
+- `SQL_DATABASE` – Имя БД;
+- `SQL_USER` – Пользователь БД;
+- `SQL_PASSWORD` – Пароль БД;
+- `SQL_HOST` – Имя хоста с БД;
+- `SQL_PORT` – Порт подключения к БД;
+- `POSTGRES_USER` – Пользователь БД;
+- `POSTGRES_PASSWORD` – Пароль БД
+- `POSTGRES_DB` – Имя БД;
+- `FEEDER_DEFAULT_SRC_FILE` – YAML'ик с источниками RSS;
 
 Пример:
 ```ini
@@ -32,40 +42,64 @@ DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 [::1]"
 CELERY_BROKER=redis://rediska:6379/0
 CELERY_BACKEND=django-db
 C_FORCE_ROOT=1
+SQL_ENGINE=django.db.backends.postgresql
+SQL_DATABASE=postgres
+SQL_USER=postgres
+SQL_PASSWORD=postgres
+SQL_HOST=postgresql
+SQL_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
+FEEDER_DEFAULT_SRC_FILE=sources.yaml
 ```
 
 Запуск в Docker:
 ```shell
-docker compose up -d 
+docker compose up -d --build 
 ```
 
-Создать суперюзера можно локально (потребуется созданное виртуальное окружение), либо внутри контейнера:
+Создать суперюзера внутри контейнера:
 ```shell
-source venv/bin/activate
-python3 manage.py migrate
+docker compose exec app sh 
+# внутри контейнера выполняется
 pythno3 manage.py createsuperuser
 ```
 
 ## Наполнение источниками RSS
 
-Зайти в SQLite3 базу данных:
-```shell
-sqlite3 db.sqlite3
+Отредактировать `sources.yaml`:
+```yaml
+---
+feeds: # обязательный объект со списком RSS-лент
+  - title: '@habr' # название RSS-ленты
+    url: 'https://habr.com/ru/rss/all/all/?fl=en%2Cru&limit=100' # ссылка на RSS-ленту
+  - title: '@jtprog' # название RSS-ленты
+    url: 'https://jtprog.ru/index.xml' # ссылка на RSS-ленту
 ```
 
-Импортировать базовые источники:
-```sqlite
-.read init.sql
-.quit
+Импорт всех источников будет выполнен автоматически – расписание в файле `celery.py` в базовом модуле `core`:
+```yaml
+...
+{
+    'task_source_loader': {  # имя задачи
+        'task': 'feeder.tasks.task_source_loader',  # откуда брать задачу - <app_name>.<tasks_file>.<func_name>
+        'schedule': 60 * 30,  # интервал выполнения (в секундах)
+    }
+}
+...
 ```
 
 ## Copyright
 
 LICENSE: http://www.wtfpl.net
 
-AUTHOR: Savin Michael aka [@jtprogru](https://github.com/jtprogru)
+## Author
+Savin Michael aka [@jtprogru](https://github.com/jtprogru)
 
 WWW: https://jtprog.ru
 
 Twitter: https://twitter.com/jtprogru
+
+Telegram: https://t.me/jtprogru_channel
 
