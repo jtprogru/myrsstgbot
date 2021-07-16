@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django_celery_results',
 
     'feeder',
+    'sender',
 ]
 
 MIDDLEWARE = [
@@ -183,6 +184,7 @@ DJANGO_CELERY_BEAT_TZ_AWARE = True
 # Telegramm
 
 TG_BOT_TOKEN = os.environ.get('TG_BOT_TOKEN', None)
+TG_ADMIN_ID = os.environ.get('TG_ADMIN_ID', None)
 
 # DATEPARCER
 PREFER_LOCALE_DATE_ORDER = True

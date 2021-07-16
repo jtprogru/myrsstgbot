@@ -1,6 +1,6 @@
 from django.db import models
 
-from .constants import STATUS_NEW, STATUS_RUNNING, STATUS_READY, POSTED_NO, POSTED_YES
+from . import constants
 
 
 class Source(models.Model):
@@ -14,12 +14,8 @@ class Source(models.Model):
     )
     status = models.IntegerField(
         verbose_name='Статус обработки',
-        choices=(
-            (STATUS_NEW, 'Новое'),
-            (STATUS_RUNNING, 'Запущено'),
-            (STATUS_READY, 'Готово'),
-        ),
-        default=STATUS_NEW,
+        choices=constants.SOURCE_STATUS_CHOICES,
+        default=constants.STATUS_NEW,
     )
 
     def __str__(self):
@@ -39,13 +35,11 @@ class RSSItem(models.Model):
     link = models.URLField(max_length=512, unique=True, verbose_name="Ссылка на статью")
     pub_date = models.DateTimeField(verbose_name="Дата публикации")
     description = models.TextField(verbose_name="Описание")
-    posted = models.IntegerField(
+    posted = models.CharField(
+        max_length=2,
         verbose_name='Отправлено в TG',
-        choices=(
-            (POSTED_NO, 'Нет'),
-            (POSTED_YES, 'Да'),
-        ),
-        default=POSTED_NO,
+        choices=constants.RSSITEM_POSTED_CHOICES,
+        default=constants.POSTED_NO,
     )
 
     def __str__(self):
