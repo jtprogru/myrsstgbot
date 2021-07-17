@@ -57,7 +57,7 @@ class RSSParser:
         if not obj:
             raise CommandError('no sources found')
         self.source = obj
-        logger.info(f'Работаем над заданием {self.source.title}')
+        # logger.info(f'Работаем над заданием {self.source.title}')
 
     def running_source(self):
         self.source.status = STATUS_RUNNING
@@ -70,18 +70,25 @@ class RSSParser:
         logger.info(f'Завершили задание {self.source.title}')
 
     @log_errors
+    def check_rssitem_exists(self, url: str):
+        return RSSItem.objects.filter(link=url).first()
+
+    @log_errors
     def get_rss_item_list(self, feed: FeedParserDict) -> List[RSSItem]:
         rss_item = []
         for item in feed['entries']:
             dtt = datetime_parse(item['published'])
 
-            obj = RSSItem.objects.update_or_create(
-                title=item['title'],
-                link=item['link'],
-                pub_date=dtt,
-                description=item['summary']
-            )
-            rss_item.append(obj)
+            obj_count = self.check_rssitem_exists(item['link'])
+
+            if obj_count == 0:
+                obj = RSSItem.objects.create(
+                    title=item['title'],
+                    link=item['link'],
+                    pub_date=dtt,
+                    description=item['summary']
+                )
+                rss_item.append(obj)
 
         return rss_item
 
@@ -109,18 +116,21 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         rssparser = RSSParser()
-        status = STATUS_NEW
-        source = Source.objects.get(pk=options['url'])
-        if status == 0:
+        # status = STATUS_NEW
+        source = Source.objects.filter(url=options['url']).first()
+        if source.status == STATUS_NEW:
             PeriodicTask.objects.create(
                 name='task_rss_loader',
                 task='task_rss_loader',
                 interval=IntervalSchedule.objects.get(every=120, period='seconds'),
                 start_time=timezone.now(),
             )
-        else:
-            source.status = STATUS_READY
-            source.refresh_from_db()
-            logger.info('[*] Source {} status -> {}'.format(source.id, source.status))
+
+        if source.status == STATUS_READY:
+            logger.info('[*] Source {} status -> {}'.format(source.title, source.status))
+
+        source.status = STATUS_READY
+        source.refresh_from_db()
+        logger.info('[*] Source {} status -> {}'.format(source.title, source.status))
 
         rssparser.parse_all()
