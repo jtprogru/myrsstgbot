@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.9.5-alpine
+FROM python:3.9.7-alpine
 
 ENV TZ=Europe/Moscow
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
