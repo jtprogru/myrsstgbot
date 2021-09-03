@@ -18,7 +18,7 @@ services:
       - postgresql
 
   postgresql:
-    image: postgres:13.3-alpine3.14
+    image: postgres:13.4-alpine3.14
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
