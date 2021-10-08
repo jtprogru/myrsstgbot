@@ -67,7 +67,7 @@ services:
       - rediska
 
   rediska:
-    image: redis:6.2.5-alpine
+    image: redis:6.2.6-alpine
 
 volumes:
    postgres_data:
