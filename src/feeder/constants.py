@@ -1,0 +1,17 @@
+STATUS_NEW = 1
+STATUS_RUNNING = 2
+STATUS_READY = 3
+
+SOURCE_STATUS_CHOICES = (
+    (STATUS_NEW, 'Новое'),
+    (STATUS_RUNNING, 'Запущено'),
+    (STATUS_READY, 'Готово'),
+)
+
+POSTED_YES = 1
+POSTED_NO = 0
+
+RSSITEM_POSTED_CHOICES = (
+    (POSTED_NO, 'Нет'),
+    (POSTED_YES, 'Да'),
+)

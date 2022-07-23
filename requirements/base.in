@@ -1,0 +1,14 @@
+Django
+gunicorn
+python-telegram-bot
+feedparser
+requests
+celery
+redis   
+django-celery-beat
+django-celery-results
+dateparser
+flower
+psycopg2-binary
+ruamel.yaml
+
